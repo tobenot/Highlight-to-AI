@@ -1,0 +1,23 @@
+[app]
+language = "zh-CN"
+restore_clipboard = true
+beep = true
+copy_timeout_seconds = 1.0
+paste_delay_seconds = 0.15
+
+[hotkey]
+# pynput GlobalHotKeys format, examples: "<f3>", "<ctrl>+<shift>+space"
+trigger = "<f3>"
+
+[api]
+# OpenAI-compatible endpoint. DeepSeek example: "https://api.deepseek.com"
+base_url = "https://api.deepseek.com"
+# Prefer environment variable HIGHLIGHT_TO_AI_API_KEY or OPENAI_API_KEY for real use.
+api_key = ""
+model = "deepseek-chat"
+timeout_seconds = 15
+max_tokens = 2048
+temperature = 0.3
+
+[prompt]
+system = "你是一个极简的文本处理引擎。用户会给你一段文本，其中包含处理指令和待处理内容。请直接执行指令，并只输出最终处理结果。不要输出解释，不要寒暄，不要包含‘好的’‘以下是’等前置话术。"

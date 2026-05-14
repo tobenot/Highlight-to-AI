@@ -194,7 +194,7 @@ design.md 提出的“**选中文本（指令+内容） → Ctrl+C → LLM → C
 
 #### 2.1 全局快捷键监听
 - **推荐**：`pynput`（跨平台最佳，支持 HotKey/GlobalHotKeys）。
-  - 示例：`keyboard.GlobalHotKeys` 或 `HotKey` 类监听 `<ctrl>+<alt>+h` 等。
+  - 示例：`keyboard.GlobalHotKeys` 或 `HotKey` 类监听 `<f3>` 等。
   - 优点：非阻塞、支持组合键、多热键。
 - 备选：`keyboard` 库（Windows 强，Mac 较弱）；`pyautogui` 辅助。
 - 注意：Mac 需要“辅助功能”权限；Windows 需管理员或正确注册热键。

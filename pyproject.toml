@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "highlight-to-ai"
+version = "0.1.0"
+description = "A lightning-fast desktop tool to process highlighted text with OpenAI-compatible APIs and replace it in-place."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "openai>=1.0.0",
+    "pynput>=1.7.6",
+    "pyautogui>=0.9.54",
+    "pyperclip>=1.8.2",
+]
+
+[project.scripts]
+highlight-to-ai = "highlight_to_ai.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
