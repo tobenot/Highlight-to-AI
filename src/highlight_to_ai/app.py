@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import logging
+import threading
+import time
 
 from .clipboard import ClipboardService
 from .config import ConfigService, RuntimeConfig
@@ -10,6 +12,8 @@ from .input_control import InputService
 from .llm import LLMClient
 from .orchestrator import TaskOrchestrator
 from .prompt import PromptService
+from .tray import TrayController
+
 
 
 class AppRuntime:
@@ -17,7 +21,10 @@ class AppRuntime:
         self._logger = logger
         self._config_service = config_service or ConfigService()
         self._hotkey_listener: HotkeyListener | None = None
+        self._tray: TrayController | None = None
         self._config: RuntimeConfig | None = None
+        self._stop_event = threading.Event()
+
 
     def start(self) -> None:
         config = self._config_service.load()
@@ -52,14 +59,42 @@ class AppRuntime:
         )
         self._hotkey_listener.start()
 
+        self._tray = TrayController(
+            app_name="Highlight-to-AI",
+            hotkey=config.hotkey.trigger,
+            config_path=config.path,
+            on_quit=self.request_stop,
+            logger=self._logger,
+        )
+
         print("Highlight-to-AI 已启动")
         print(f"配置文件：{config.path}")
         print(f"快捷键：{config.hotkey.trigger}")
-        print("选中包含指令的文本后按快捷键即可处理。按 Ctrl+C 结束当前终端进程。")
-        self._hotkey_listener.join()
+        print("程序已进入后台，可在系统托盘中退出。")
+
+        if self._tray.available:
+            self._tray.run()
+            self._stop_event.set()
+            return
+
+        self._logger.warning("tray dependency unavailable, running without tray")
+        while not self._stop_event.is_set():
+            time.sleep(0.3)
+
+
+    def request_stop(self) -> None:
+        self._stop_event.set()
+        if self._hotkey_listener is not None:
+            self._hotkey_listener.stop()
+            self._hotkey_listener = None
 
     def stop(self) -> None:
+        self._stop_event.set()
+        if self._tray is not None:
+            self._tray.stop()
+            self._tray = None
         if self._hotkey_listener is not None:
             self._hotkey_listener.stop()
             self._hotkey_listener = None
         self._logger.info("app stopped")
+

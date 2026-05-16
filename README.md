@@ -60,6 +60,24 @@ $env:HIGHLIGHT_TO_AI_API_KEY="你的 API Key"
 
 ## 启动
 
+### 一键启动（Windows）
+
+直接双击项目根目录的 `start.bat` 即可。
+
+如果你在 PowerShell 里执行后立即退出，请查看脚本输出的 `[ERROR]` 信息（已增强退出码与错误提示）。
+
+脚本会自动：
+
+
+- 检查 Python 是否可用。
+- 检查并生成 `config.toml`（若缺失）。
+- 安装依赖（`pip install -e .`）。
+- 使用 `Start-Process` 后台启动（优先 `pythonw`）。
+- 创建系统托盘图标，可在托盘菜单中打开配置或退出程序。
+
+
+### 手动启动
+
 ```powershell
 highlight-to-ai
 ```
@@ -70,7 +88,9 @@ highlight-to-ai
 python -m highlight_to_ai
 ```
 
-启动后保持终端窗口运行。默认快捷键：
+启动后将驻留在系统托盘（无主界面）。默认快捷键：
+
+
 
 ```text
 F3
