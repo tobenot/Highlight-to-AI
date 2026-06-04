@@ -88,6 +88,16 @@ highlight-to-ai
 python -m highlight_to_ai
 ```
 
+### 后台静默启动（推荐）
+
+使用 `Start-Process` 以无窗口方式启动，不会占用终端：
+
+```powershell
+Start-Process -FilePath pythonw -ArgumentList "run.pyw" -WorkingDirectory "D:\GitRep\Highlight-to-AI"
+```
+
+> 将 `-WorkingDirectory` 替换为你本地项目的实际路径。
+
 启动后将驻留在系统托盘（无主界面）。默认快捷键：
 
 
